@@ -1,0 +1,33 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand{
+    font-size: 1.8em;
+}
+
+.nav-item{
+    font-size: 1.1em;
+}
+
+.c1{
+    width: 80vw;
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 55px 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.padder{
+    height: 10px;
+}
+
+.btn{
+    font-size: 1.2em;
+}
+
+#alert1, #alert2{
+    display: none;
+}

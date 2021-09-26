@@ -1,0 +1,17 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand{
+    font-size: 1.8em;
+}
+
+.nav-item{
+    font-size: 1.1em;
+}
+
+#map {
+    height: 90vh;
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CDN starts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- Bootstrap CDN ends -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/analysis.css">
+    <link rel="icon" type="image/png" href="images/wallet.png"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>E-Wallet Analysis</title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+    <h2 class='heading'>Expense Breakup</h2>
+    <% var arr=[]; %>
+    <% var s1=0, s2=0; %>
+    <% expenses.forEach(e1=>{ %>
+        <% if(e1.category==="Earnings" && e1.createdAt === moment().format("D.MM.YY")){%>
+            <% s1=s1+parseInt(e1.price) %>
+        <%}%>
+    <% })%>
+    <% arr.push(s1); s1=0; %>
+    <% expenses.forEach(e1=>{ %>
+        <% if(e1.category==="Grocery" && e1.createdAt === moment().format("D.MM.YY")){%>
+            <% s1=s1+parseInt(e1.price) %>
+            <% s2=s2+parseInt(e1.price) %>
+        <%}%>
+    <% })%>
+    <% arr.push(s1); s1=0; %>
+    <% expenses.forEach(e1=>{ %>
+        <% if(e1.category==="Health" && e1.createdAt === moment().format("D.MM.YY")){%>
+            <% s1=s1+parseInt(e1.price) %>
+            <% s2=s2+parseInt(e1.price) %>
+        <%}%>
+    <% })%>
+    <% arr.push(s1); s1=0; %>
+    <% expenses.forEach(e1=>{ %>
+        <% if(e1.category==="Essentials" && e1.createdAt === moment().format("D.MM.YY")){%>
+            <% s1=s1+parseInt(e1.price) %>
+            <% s2=s2+parseInt(e1.price) %>
+        <%}%>
+    <% })%>
+    <% arr.push(s1); s1=0; %>
+    <% expenses.forEach(e1=>{ %>
+        <% if(e1.category==="Miscellaneous" && e1.createdAt === moment().format("D.MM.YY")){%>
+            <% s1=s1+parseInt(e1.price) %>
+            <% s2=s2+parseInt(e1.price) %>
+        <%}%>
+    <% })%>
+    <% arr.push(s1); s1=0; %>
+
+    <% if(arr.length) {%>
+        <div class="c3">
+            <div class="c1 container-fluid"><canvas id="myChart1"></canvas></div>
+            <div class="c2 container-fluid"><canvas id="myChart2"></canvas></div>
+        </div>
+        <div class="jumbotron">
+            <h2>Daily Expenditure Trend</h2>
+        </div>
+        <div class="c4 container-fluid"><canvas id="myChart3"></canvas></div>
+        <script>
+            var canvas = document.getElementsByTagName('canvas')[0];
+            canvas.width = 50;
+            canvas.height = 50;
+            Chart.defaults.font.size = 16;
+            var test = <%- JSON.stringify(arr) %>;
+            var labels= [
+                    'Earnings',
+                    'Grocery',
+                    'Health',
+                    'Essentials',
+                    'Miscellaneous'
+                ]
+            const data1 = {
+                labels: labels,
+                datasets: [{
+                    label: 'Pie Chart',
+                    data: test,
+                    backgroundColor: [
+                    '#F2A104',
+                    '#192E5B',
+                    '#72A2C0',
+                    '#1D65A6',
+                    '#00743F'
+                ],
+                    hoverOffset: 4
+                }]
+            };
+
+            const data2 = {
+                labels: labels,
+                datasets: [{
+                    label: 'Daily Expense Radar',
+                    data: test,
+                    fill: true,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }]
+            };
+            const data3 = {
+                labels: labels,
+                datasets: [{
+                    label: 'Daily Expenses Trend',
+                    data: test,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            };
+
+            const config1 = {
+                type: 'doughnut',
+                data: data1,
+                options: {}
+            };
+            const config2 = {
+                type: 'radar',
+                data: data2,
+                options: {}
+            };
+            const config3 = {
+                type: 'line',
+                data: data3,
+                options: {}
+            };
+            var myChart = new Chart(
+                document.getElementById('myChart1'),
+                config1
+            );
+            var myChart = new Chart(
+                document.getElementById('myChart2'),
+                config2
+            );
+            var myChart = new Chart(
+                document.getElementById('myChart3'),
+                config3
+            );
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <%} %>
+</body>
+</html>

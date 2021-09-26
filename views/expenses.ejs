@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-Wallet Expense Tab</title>
+    <!-- Bootstrap CDN starts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- Bootstrap CDN ends -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/png" href="images/wallet.png" />
+    <link rel="stylesheet" href="css/expenses.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+        <a class="fixedButton" href="/dashboard">
+            <div class="roundedFixedBtn"><i class="fa fa-plus"></i></div>
+        </a>
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-12">
+                        <div class="flexer">
+                            <h3 id="headerp">Expenses for <%= date %>
+                            </h3>
+                            <form action="/filterExpenses" method="POST">
+                                <input type="date" id="dateFilter" name="dateFilter">
+                                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+                            </form>
+                            <button class="btn btn-secondary" id="jsPDF"><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="table-wrap" style="border-radius: 15px;">
+                            <table class="table" id="styledTable">
+                                <thead class="thead-primary">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Receipt</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% expenses.forEach(e1=>{ %>
+                                        <% let str=e1._id.toString() %>
+                                            <%if(e1.createdAt===date){%>
+                                                <form action="/expenses" method="POST">
+                                                    <input type="hidden" name="uid" value=<%=str %>>
+                                                    <tr class="alert">
+                                                        <td>
+                                                            <div class="email">
+                                                                <span>
+                                                                    <%=e1.category%>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="email">
+                                                                <span>
+                                                                    <%=e1.itemName%>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="email">
+                                                                <span>₹<%=e1.price%></span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="email">
+                                                                <span>
+                                                                    <%if(e1.productImage){ %>
+                                                                        <a href="/<%=e1.productImage%>"
+                                                                            target="__blank">View
+                                                                            Receipt <i
+                                                                                class="fas fa-external-link-alt"></i></a>
+                                                                        <%}else {%>
+                                                                            <a href="#">Not uploaded</i></a>
+                                                                            <%}%>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <button type="submit" class="close" data-dismiss="modal">
+                                                                <span><i class="fas fa-times"></i></span>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </form>
+                                                <%}%>
+                                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
+
+        <!-- For jsPDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+            integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="js/generate.js"></script>
+</body>
+
+</html>
